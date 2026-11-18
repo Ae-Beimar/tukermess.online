@@ -1,0 +1,15 @@
+# tukermes · cabeceras para Netlify (equivalente a .htaccess, que Netlify ignora)
+# Netlify ya fuerza HTTPS y comprime los archivos por su cuenta.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+
+# El service worker siempre se revalida (si no, los celulares se quedan con versiones viejas)
+/sw.js
+  Cache-Control: no-cache
+
+# Fotos e íconos: 30 días
+/assets/*
+  Cache-Control: public, max-age=2592000

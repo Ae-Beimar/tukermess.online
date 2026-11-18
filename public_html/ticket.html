@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tu ticket · tukermes</title>
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#f5f5f7">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="tukermes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/tailwindConfig.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen bg-canvas pb-12 font-sans antialiased">
+  <header class="wrap flex items-center justify-between py-4">
+    <a href="./" class="flex items-center gap-2.5 text-xl font-extrabold tracking-tight">
+      <img src="assets/img/logo.svg" alt="tukermes.online" class="brand-logo">
+    </a>
+  </header>
+  <main class="mx-auto w-full max-w-[420px] px-4">
+    <div id="ticket-view"><div class="h-[560px] animate-pulse rounded-[26px] bg-line"></div></div>
+    <div id="ticket-actions" class="mt-4 hidden">
+      <button type="button" id="ticket-download" class="btn btn-dark w-full">Guardar ticket como imagen</button>
+      <p class="mt-3 text-center text-xs text-muted">Guarda este enlace o la imagen: el QR es tu comprobante.</p>
+    </div>
+  </main>
+  <script type="module" src="js/ticketPage.js"></script>
+</body>
+</html>

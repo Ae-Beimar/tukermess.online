@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Editar kermés · tukermes</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#f5f5f7">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="tukermes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/tailwindConfig.js"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen pb-24 font-sans antialiased lg:pb-0">
+
+  <header class="glass-bar sticky top-0 z-[1100]">
+    <div class="wrap flex items-center justify-between gap-3 py-3">
+      <a href="./" class="flex items-center gap-2.5 text-xl font-extrabold tracking-tight">
+        <img src="assets/img/logo.svg" alt="tukermes.online" class="brand-logo">
+      </a>
+      <a href="panel.html" class="btn btn-outline !h-11 !px-4">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        Mi panel
+      </a>
+    </div>
+  </header>
+
+  <div id="not-found" class="mx-auto hidden max-w-xl px-4 py-20 text-center">
+    <h1 class="text-2xl font-extrabold">No encontramos esta kermés</h1>
+    <p class="mt-2 text-muted">Puede que se haya eliminado o que pertenezca a otra cuenta.</p>
+    <a href="panel.html" class="btn btn-primary mt-6">Volver a mi panel</a>
+  </div>
+
+  <div id="editor" class="wrap pb-16 pt-6">
+    <div class="mb-6 flex flex-wrap items-center gap-3">
+      <h1 id="editor-title" class="text-[2rem] font-extrabold leading-[1.05] tracking-tight sm:text-4xl">Nueva kermés</h1>
+      <span id="status-badge" class="status status-borrador">Borrador</span>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
+      <form id="kermes-form" class="min-w-0 space-y-6" novalidate>
+
+        <!-- 1. Información -->
+        <section class="panel p-5 sm:p-6">
+          <h2 class="mb-4 flex items-center gap-3 text-lg font-bold tracking-tight"><span class="step">1</span> Información</h2>
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between"><label class="field-label" for="f-title">Nombre de la kermés</label><span class="text-xs text-muted" data-count="f-title"></span></div>
+              <input id="f-title" name="title" class="input" maxlength="120" placeholder="Ej. Kermés Pro Techo de la Parroquia San Roque">
+              <p class="field-error hidden" data-error="title"></p>
+            </div>
+            <div>
+              <div class="flex justify-between"><label class="field-label" for="f-description">Motivo o historia</label><span class="text-xs text-muted" data-count="f-description"></span></div>
+              <textarea id="f-description" name="description" class="input" maxlength="4000" rows="5" placeholder="¿Para qué se reúnen los fondos? ¿Quiénes organizan? ¿Habrá juegos o música?"></textarea>
+              <p class="field-hint">Contar la causa ayuda a que más gente se anime a ir.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Fecha y horario -->
+        <section class="panel p-5 sm:p-6">
+          <h2 class="mb-4 flex items-center gap-3 text-lg font-bold tracking-tight"><span class="step">2</span> Fecha y horario</h2>
+          <div class="grid gap-4 sm:grid-cols-3">
+            <div>
+              <label class="field-label" for="f-date">Fecha</label>
+              <input id="f-date" name="event_date" type="date" class="input">
+              <p class="field-error hidden" data-error="event_date"></p>
+            </div>
+            <div>
+              <label class="field-label" for="f-start">Desde</label>
+              <input id="f-start" name="start_time" type="time" class="input" value="10:00">
+              <p class="field-error hidden" data-error="start_time"></p>
+            </div>
+            <div>
+              <label class="field-label" for="f-end">Hasta <span class="font-normal text-muted">(opcional)</span></label>
+              <input id="f-end" name="end_time" type="time" class="input" value="16:00">
+              <p class="field-error hidden" data-error="end_time"></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Ubicación -->
+        <section class="panel p-5 sm:p-6">
+          <h2 class="mb-4 flex items-center gap-3 text-lg font-bold tracking-tight"><span class="step">3</span> Ubicación</h2>
+          <div class="grid gap-4 sm:grid-cols-[minmax(0,1fr)_220px]">
+            <div>
+              <label class="field-label" for="f-address">Dirección</label>
+              <input id="f-address" name="address" class="input" maxlength="200" placeholder="Ej. Calle Ñuflo de Chávez esq. Ayacucho" autocomplete="off">
+              <p class="field-error hidden" data-error="address"></p>
+            </div>
+            <div>
+              <label class="field-label" for="f-zone">Zona o barrio</label>
+              <input id="f-zone" name="zone" class="input" maxlength="80" list="zones" placeholder="Ej. Equipetrol" autocomplete="off">
+              <datalist id="zones"></datalist>
+              <p class="field-error hidden" data-error="zone"></p>
+            </div>
+          </div>
+
+          <div class="mt-4 flex flex-wrap gap-2">
+            <button type="button" id="geo-search" class="btn btn-soft !h-10 !px-4 text-[13px]">Buscar la dirección en el mapa</button>
+            <button type="button" id="geo-me" class="btn btn-soft !h-10 !px-4 text-[13px]">Usar mi ubicación actual</button>
+          </div>
+
+          <div id="pick-map" class="mt-4 h-72 w-full overflow-hidden rounded-[18px] border border-line sm:h-80" role="region" aria-label="Mapa para marcar la ubicación"></div>
+          <div class="mt-2 flex flex-wrap items-center justify-between gap-2">
+            <p class="field-hint !mt-0">Toca el mapa o arrastra el pin hasta el lugar exacto.</p>
+            <p id="coords" class="text-xs font-medium text-muted"></p>
+          </div>
+          <p class="field-error hidden" data-error="location"></p>
+        </section>
+
+        <!-- 4. Portada -->
+        <section class="panel p-5 sm:p-6">
+          <h2 class="mb-1 flex items-center gap-3 text-lg font-bold tracking-tight"><span class="step">4</span> Foto de portada</h2>
+          <p class="mb-4 text-sm text-muted">El afiche o una foto de la comida. Se ve en el muro y en la página del evento.</p>
+          <label id="cover-drop" class="dropzone" for="cover-input">
+            <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-8 8"/></svg>
+            <span class="text-sm font-semibold text-ink">Toca para elegir una foto</span>
+            <span class="text-xs">o arrástrala aquí · JPG, PNG o WEBP</span>
+            <img id="cover-preview" src="assets/img/placeholder-kermes.svg" alt="Vista previa de la portada" class="hidden">
+          </label>
+          <input id="cover-input" type="file" accept="image/jpeg,image/png,image/webp" class="sr-only">
+          <div id="cover-actions" class="mt-3 hidden gap-2">
+            <label for="cover-input" class="btn btn-soft !h-10 !px-4 cursor-pointer text-[13px]">Cambiar foto</label>
+            <button type="button" id="cover-remove" class="btn btn-soft !h-10 !px-4 text-[13px]">Quitar</button>
+          </div>
+        </section>
+
+        <!-- 5. Menú -->
+        <section id="menu" class="panel scroll-mt-24 p-5 sm:p-6">
+          <div class="mb-4 flex items-center justify-between gap-3">
+            <h2 class="flex items-center gap-3 text-lg font-bold tracking-tight"><span class="step">5</span> Menú</h2>
+            <span id="dish-count" class="text-sm text-muted"></span>
+          </div>
+          <p class="-mt-2 mb-4 text-sm text-muted">Platos y bebidas con su precio y cuántas porciones tienes. La caja las descuenta al vender y avisa cuando se acaban.</p>
+          <ul id="dish-list" class="space-y-3"></ul>
+          <p id="dish-empty" class="rounded-[20px] border-2 border-dashed border-line px-4 py-8 text-center text-sm text-muted">
+            Agrega los platos y bebidas que vas a vender, con su precio.
+          </p>
+          <p class="field-error hidden" data-error="menu"></p>
+          <button type="button" id="dish-add" class="btn btn-sun mt-4 w-full sm:w-auto">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            Agregar plato o bebida
+          </button>
+          <input id="dish-photo-input" type="file" accept="image/jpeg,image/png,image/webp" class="sr-only">
+        </section>
+
+        <!-- 6. Rifa -->
+        <section class="panel p-5 sm:p-6">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <h2 class="flex items-center gap-3 text-lg font-bold tracking-tight"><span class="step">6</span> Rifa</h2>
+              <p class="mt-1 text-sm text-muted">Boletos numerados que vendes desde la caja. No se muestra en el muro público.</p>
+            </div>
+            <label class="flex flex-none cursor-pointer items-center gap-2 text-sm font-bold">
+              <input id="f-raffle" name="raffle_enabled" type="checkbox" class="h-5 w-5 accent-[#f97316]">
+              Hay rifa
+            </label>
+          </div>
+          <div id="raffle-fields" class="mt-4 hidden gap-4 sm:grid-cols-3">
+            <div>
+              <label class="field-label" for="f-raffle-price">Precio del boleto</label>
+              <div class="input-group">
+                <span class="addon">Bs</span>
+                <input id="f-raffle-price" name="raffle_price" class="input" type="number" min="0" step="0.5" inputmode="decimal" placeholder="10">
+              </div>
+              <p class="field-error hidden" data-error="raffle_price"></p>
+            </div>
+            <div>
+              <label class="field-label" for="f-raffle-total">Cantidad de números</label>
+              <input id="f-raffle-total" name="raffle_total" class="input" type="number" min="1" max="5000" step="1" inputmode="numeric" placeholder="200">
+              <p class="field-error hidden" data-error="raffle_total"></p>
+            </div>
+            <div class="sm:col-span-3">
+              <div class="flex items-baseline justify-between gap-3">
+                <p class="field-label !mb-0">Premios</p>
+                <span id="prize-count" class="text-xs text-muted"></span>
+              </div>
+              <p class="mb-3 mt-1 text-sm text-muted">En orden: el primero es el 1.er premio. Agrega una foto para que se vea en la caja.</p>
+              <ol id="prize-list" class="space-y-2.5"></ol>
+              <p class="field-error hidden" data-error="prizes"></p>
+              <button type="button" id="prize-add" class="btn btn-outline mt-3 w-full sm:w-auto">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                Agregar premio
+              </button>
+              <input id="prize-photo-input" type="file" accept="image/jpeg,image/png,image/webp" class="sr-only">
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. Contacto -->
+        <section class="panel p-5 sm:p-6">
+          <h2 class="mb-4 flex items-center gap-3 text-lg font-bold tracking-tight"><span class="step">7</span> Contacto</h2>
+          <label class="field-label" for="f-whatsapp">WhatsApp para consultas</label>
+          <div class="input-group max-w-xs">
+            <span class="addon">+591</span>
+            <input id="f-whatsapp" name="whatsapp" class="input" inputmode="numeric" maxlength="12" placeholder="70000000" autocomplete="tel-national">
+          </div>
+          <p class="field-hint">Número de celular de 8 dígitos. Aparece como botón "Escribir al organizador".</p>
+          <p class="field-error hidden" data-error="whatsapp"></p>
+        </section>
+      </form>
+
+      <!-- Panel lateral: vista previa + publicar -->
+      <aside class="lg:sticky lg:top-24 lg:self-start">
+        <div class="panel space-y-5 p-5">
+          <div>
+            <h2 class="text-lg font-bold tracking-tight">Vista previa</h2>
+            <p class="text-sm text-muted">Así se verá tu tarjeta en el muro.</p>
+          </div>
+          <div id="preview" class="pointer-events-none select-none" aria-hidden="true"></div>
+
+          <div>
+            <h3 class="mb-3 text-sm font-bold">Para publicar</h3>
+            <ul id="checklist" class="space-y-2.5"></ul>
+          </div>
+
+          <div class="hidden gap-2 lg:grid" data-actions></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Barra de acciones fija en móvil -->
+  <div class="fixed inset-x-0 bottom-0 z-[1200] glass-bar-bottom p-3 lg:hidden">
+    <div class="mx-auto grid max-w-xl grid-cols-2 gap-2" data-actions></div>
+  </div>
+
+  <script type="module" src="js/editor.js"></script>
+  <script src="js/ui/fluid.js" defer></script>
+</body>
+</html>

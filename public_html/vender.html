@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Caja · tukermes</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#f5f5f7">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="tukermes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/tailwindConfig.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen pb-32 font-sans antialiased" data-view="caja">
+
+  <!-- Barra superior de la caja -->
+  <header class="glass-bar sticky top-0 z-[1100]">
+    <div class="wrap flex items-center gap-3 py-3">
+      <a href="panel.html" class="icon-btn flex-none" aria-label="Volver a mi panel">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      </a>
+      <div class="min-w-0 flex-1">
+        <h1 id="pos-title" class="truncate text-base font-extrabold leading-tight">Caja</h1>
+        <p id="sync" class="flex min-w-0 items-center gap-1.5 whitespace-nowrap text-xs font-semibold text-muted" aria-live="polite"></p>
+      </div>
+      <a data-link="ventas.html" href="panel.html" class="btn btn-outline !h-10 flex-none !px-3.5 text-[13px]">Ver ventas</a>
+    </div>
+    <div class="wrap pb-3">
+      <div id="pos-tabs" class="segmented no-scrollbar overflow-x-auto" role="tablist" aria-label="Secciones de la caja"></div>
+    </div>
+  </header>
+
+  <div id="pos-notfound" class="mx-auto hidden max-w-xl px-4 py-20 text-center">
+    <h2 class="text-2xl font-extrabold">No encontramos esta kermés</h2>
+    <p class="mt-2 text-muted">Puede que pertenezca a otra cuenta o que no tengas señal la primera vez que la abres.</p>
+    <a href="panel.html" class="btn btn-primary mt-6">Volver a mi panel</a>
+  </div>
+
+  <main id="pos-main" class="wrap pt-4"></main>
+
+  <!-- Barra del pedido (aparece cuando hay algo agregado) -->
+  <div id="cart-bar" class="fixed inset-x-0 bottom-0 z-[1200] glass-bar-bottom hidden px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-3">
+    <div class="mx-auto flex max-w-[1080px] items-center gap-3">
+      <button id="cart-clear" type="button" class="icon-btn flex-none" aria-label="Vaciar pedido">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>
+      </button>
+      <div class="min-w-0 flex-1">
+        <p id="cart-count" class="text-xs font-semibold text-muted"></p>
+        <p id="cart-total" class="price text-xl font-extrabold leading-tight"></p>
+      </div>
+      <button id="cart-checkout" type="button" class="btn btn-primary !h-14 !px-7 text-base">Cobrar</button>
+    </div>
+  </div>
+
+  <!-- Cobro -->
+  <dialog id="checkout" class="confirm-dialog !w-[min(96vw,480px)]" aria-labelledby="checkout-title">
+    <form method="dialog" class="flex max-h-[85vh] flex-col">
+      <div class="flex items-center justify-between border-b border-line px-5 py-4">
+        <h2 id="checkout-title" class="text-lg font-extrabold">Cobrar</h2>
+        <button value="cancel" class="icon-btn" aria-label="Cerrar">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="flex-1 space-y-5 overflow-y-auto px-5 py-4">
+        <ul id="checkout-lines" class="divide-y divide-line"></ul>
+
+        <div id="reserve-box" class="hidden space-y-3">
+          <div>
+            <label class="field-label" for="res-name">¿A nombre de quién?</label>
+            <input id="res-name" class="input" maxlength="80" autocomplete="off" placeholder="Nombre del cliente">
+          </div>
+          <div>
+            <label class="field-label" for="res-phone">Celular <span class="font-normal text-muted">(para mandarle el ticket por WhatsApp)</span></label>
+            <input id="res-phone" class="input" maxlength="20" inputmode="tel" autocomplete="off" placeholder="Ej. 70012345">
+          </div>
+        </div>
+
+        <div>
+          <p class="field-label">¿Cómo pagó?</p>
+          <div id="pay-method" class="tabs" data-no-thumb role="radiogroup" aria-label="Forma de pago">
+            <button type="button" role="radio" data-method="efectivo" aria-selected="true" class="inline-flex items-center justify-center gap-2">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/></svg>
+              Efectivo
+            </button>
+            <button type="button" role="radio" data-method="qr" aria-selected="false" class="inline-flex items-center justify-center gap-2">
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v7h-4M14 21v-3"/></svg>
+              QR
+            </button>
+          </div>
+        </div>
+
+        <div id="cash-box" class="space-y-2">
+          <label class="field-label" for="cash-received">Recibido</label>
+          <div class="input-group">
+            <span class="addon">Bs</span>
+            <input id="cash-received" class="input price" type="number" min="0" step="0.5" inputmode="decimal" placeholder="Monto que te dieron">
+          </div>
+          <div id="cash-quick" class="flex flex-wrap gap-2"></div>
+          <p id="cash-change" class="note note-neutral" aria-live="polite"></p>
+        </div>
+      </div>
+      <div class="border-t border-line px-5 py-4">
+        <button id="checkout-confirm" type="button" class="btn btn-primary !h-14 w-full text-base"></button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Ticket de la reserva recién hecha -->
+  <dialog id="ticket-dialog" class="sheet-dialog !bg-canvas" aria-labelledby="ticket-dialog-title">
+    <div class="flex items-center justify-between px-5 pb-1 pt-4">
+      <h2 id="ticket-dialog-title" class="text-lg font-extrabold">¡Reserva lista!</h2>
+      <button type="button" class="icon-btn" data-close aria-label="Cerrar">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="max-h-[70vh] overflow-y-auto px-4 pb-2 pt-2"><div id="ticket-view"></div></div>
+    <div class="grid grid-cols-2 gap-2 px-4 pb-4 pt-2">
+      <a id="ticket-wa" href="#" target="_blank" rel="noopener" class="btn btn-whatsapp"><svg class="h-5 w-5 flex-none" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>WhatsApp</a>
+      <button type="button" id="ticket-download" class="btn btn-outline">Descargar</button>
+      <button type="button" class="btn btn-primary col-span-2" data-close>Nueva reserva</button>
+    </div>
+  </dialog>
+
+  <script type="module" src="js/vender.js"></script>
+  <script src="js/ui/fluid.js" defer></script>
+</body>
+</html>

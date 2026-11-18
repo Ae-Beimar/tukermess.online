@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mi panel · tukermes</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#f5f5f7">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="tukermes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/tailwindConfig.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen font-sans antialiased">
+
+  <!-- Barra superior: igual a la del muro -->
+  <header class="glass-bar sticky top-0 z-[1100]">
+    <div class="wrap relative flex items-center justify-between gap-3 py-3">
+      <a href="./" class="flex items-center gap-2.5 text-xl font-extrabold tracking-tight">
+        <img src="assets/img/logo.svg" alt="tukermes.online" class="brand-logo">
+      </a>
+      <div class="flex items-center gap-2">
+        <button id="menu-btn" type="button" class="menu-btn" aria-haspopup="true" aria-expanded="false" aria-controls="menu-pop" aria-label="Abrir menú">
+          <span id="user-initial" class="avatar-sm" aria-hidden="true"></span>
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+
+      <!-- Menú de la cuenta -->
+      <div id="menu-pop" class="menu-pop hidden" role="menu" aria-labelledby="menu-btn">
+        <div class="flex items-center gap-3 px-3 pb-3 pt-2">
+          <span id="menu-initial" class="avatar-md" aria-hidden="true"></span>
+          <div class="min-w-0">
+            <p id="menu-name" class="truncate font-bold leading-tight"></p>
+            <p id="menu-email" class="truncate text-xs text-muted"></p>
+          </div>
+        </div>
+        <div class="menu-sep"></div>
+        <a href="editar.html" class="menu-item" role="menuitem">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          Nueva kermés
+        </a>
+        <button type="button" class="menu-item" role="menuitem" data-menu="profile">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          Mi perfil
+        </button>
+        <div class="menu-sep"></div>
+        <button id="logout" type="button" class="menu-item is-danger" role="menuitem">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 16l-4-4 4-4M6 12h10"/></svg>
+          Salir
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap space-y-8 pb-16 pt-6">
+
+    <!-- Saludo y recaudado -->
+    <section class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between" aria-labelledby="greet-title">
+      <div>
+        <h1 id="greet-title" class="text-[2rem] font-extrabold leading-[1.05] tracking-tight sm:text-5xl">Hola, <span id="greet-name">organizador</span></h1>
+        <p id="greet-sub" class="mt-2 max-w-xl text-muted sm:text-lg">Aquí manejas tus kermeses.</p>
+        <p id="demo-banner" class="mt-3 hidden text-xs text-muted">Modo demo: tus kermeses se guardan solo en este navegador.</p>
+      </div>
+    </section>
+
+
+    <!-- Mis kermeses -->
+    <section aria-labelledby="list-title">
+      <div class="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <h2 id="list-title" class="text-xl font-extrabold tracking-tight">Mis kermeses</h2>
+        <div id="status-filter" class="segmented no-scrollbar overflow-x-auto lg:w-auto" role="group" aria-label="Filtrar por estado">
+          <button type="button" data-status="" aria-pressed="true">Todas <span class="count" data-count=""></span></button>
+          <button type="button" data-status="publicada" aria-pressed="false">Publicadas <span class="count" data-count="publicada"></span></button>
+          <button type="button" data-status="borrador" aria-pressed="false">Borradores <span class="count" data-count="borrador"></span></button>
+          <button type="button" data-status="finalizada" aria-pressed="false">Finalizadas <span class="count" data-count="finalizada"></span></button>
+        </div>
+      </div>
+      <p id="status-help" class="-mt-1 mb-4 text-sm text-muted" aria-live="polite"></p>
+
+      <ul id="my-list" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <li class="h-80 animate-pulse rounded-[26px] bg-line"></li>
+        <li class="h-80 animate-pulse rounded-[26px] bg-line"></li>
+      </ul>
+
+      <div id="empty" class="panel hidden px-6 py-14 text-center">
+        <p class="text-lg font-bold">Aún no tienes kermeses</p>
+        <p class="mx-auto mt-1 max-w-sm text-sm text-muted">Crea la primera: título, fecha, ubicación en el mapa, portada y tu menú con precios.</p>
+        <a href="editar.html" class="btn btn-primary mt-5">Crear mi primera kermés</a>
+      </div>
+      <div id="empty-filter" class="panel hidden px-6 py-12 text-center text-sm text-muted">No hay kermeses en este estado.</div>
+    </section>
+
+    <!-- Descargar la app (solo celular): acceso directo en el inicio, se abre sin la barra del navegador.
+         js/ui/installApp.js lo muestra si la web aún no está instalada. -->
+    <section id="install-card" class="install-card hidden" aria-labelledby="install-title">
+      <img src="assets/img/app-icon-192.png" alt="" class="install-icon" width="48" height="48">
+      <div class="min-w-0 flex-1">
+        <h2 id="install-title" class="text-[15px] font-bold leading-tight">Descargar la app</h2>
+        <p class="mt-0.5 text-[13px] leading-snug text-muted">Ábrela desde el inicio de tu celular, a pantalla completa.</p>
+      </div>
+      <button type="button" id="install-btn" class="btn btn-primary install-btn">Descargar</button>
+    </section>
+  </main>
+
+  <!-- Cómo instalar cuando el navegador no ofrece el botón (iPhone/iPad y otros) -->
+  <dialog id="install-sheet" class="sheet-dialog" aria-labelledby="install-sheet-title">
+    <div class="flex items-center justify-between border-b border-line px-5 py-4">
+      <h2 id="install-sheet-title" class="text-lg font-extrabold">Agregar tukermes al inicio</h2>
+      <button type="button" class="icon-btn" data-close aria-label="Cerrar">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <ol id="install-steps" class="install-steps px-5 py-5"></ol>
+    <div class="px-5 pb-5">
+      <button type="button" class="btn btn-outline w-full" data-close>Entendido</button>
+    </div>
+  </dialog>
+
+  <!-- Perfil: ver y editar (hoja desde abajo en celular) -->
+  <dialog id="profile-sheet" class="sheet-dialog" aria-labelledby="profile-title">
+    <div class="flex items-center justify-between border-b border-line px-5 py-4">
+      <h2 id="profile-title" class="text-lg font-extrabold">Mi perfil</h2>
+      <button type="button" class="icon-btn" data-close aria-label="Cerrar">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+
+    <!-- Ver -->
+    <div id="profile-view" class="space-y-5 px-5 py-5">
+      <div class="flex items-center gap-4">
+        <label id="avatar-label" class="avatar-edit" title="Cambiar foto de perfil">
+          <span id="profile-initial" class="avatar-lg" aria-hidden="true"></span>
+          <span class="avatar-badge" aria-hidden="true">
+            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+          </span>
+          <input id="avatar-input" type="file" accept="image/jpeg,image/png,image/webp" class="sr-only" aria-label="Cambiar foto de perfil">
+        </label>
+        <div class="min-w-0">
+          <p id="profile-display" class="truncate text-xl font-extrabold leading-tight"></p>
+          <p id="profile-email" class="truncate text-sm text-muted"></p>
+          <div class="mt-1 flex gap-3 text-sm font-semibold">
+            <button type="button" id="avatar-change" class="text-ink underline underline-offset-2">Subir foto</button>
+            <button type="button" id="avatar-remove" class="hidden text-muted underline underline-offset-2">Quitar</button>
+          </div>
+        </div>
+      </div>
+      <dl class="divide-y divide-line rounded-2xl bg-canvas text-sm">
+        <div class="flex justify-between gap-4 px-4 py-3"><dt class="text-muted">Nombre</dt><dd id="pv-name" class="truncate font-semibold"></dd></div>
+        <div class="flex justify-between gap-4 px-4 py-3"><dt class="text-muted">Organización</dt><dd id="pv-org" class="truncate font-semibold"></dd></div>
+        <div class="flex justify-between gap-4 px-4 py-3"><dt class="text-muted">Kermeses</dt><dd id="pv-count" class="num font-semibold"></dd></div>
+      </dl>
+      <div class="rounded-2xl border border-line p-4 text-sm">
+        <p class="text-muted">Así te ven en tus kermeses</p>
+        <p class="mt-2 flex items-center gap-2"><img id="pv-public-img" src="" alt="" class="hidden h-7 w-7 rounded-full object-cover"><span id="pv-public-icon" class="flex h-7 w-7 items-center justify-center rounded-full bg-canvas"><svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span>Organiza <strong id="pv-public" class="font-bold"></strong></p>
+      </div>
+      <button type="button" class="btn btn-primary w-full" data-menu="edit-profile">Editar perfil</button>
+    </div>
+
+    <!-- Editar -->
+    <form id="profile-form" class="hidden space-y-4 px-5 py-5" novalidate>
+      <div>
+        <label class="field-label" for="profile-name">Tu nombre</label>
+        <input id="profile-name" name="full_name" class="input" maxlength="100" autocomplete="name" required>
+      </div>
+      <div>
+        <label class="field-label" for="profile-org">Organización <span class="font-normal text-muted">(opcional)</span></label>
+        <input id="profile-org" name="organization_name" class="input" maxlength="120" placeholder="Ej. Parroquia San Roque">
+        <p class="field-hint">Si la llenas, se muestra en lugar de tu nombre.</p>
+      </div>
+      <div class="grid grid-cols-2 gap-2 pt-1">
+        <button type="button" class="btn btn-soft" data-menu="profile">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="js/panel.js"></script>
+  <script src="js/ui/fluid.js" defer></script>
+  <script src="js/ui/installApp.js" defer></script>
+</body>
+</html>

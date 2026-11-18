@@ -1,0 +1,21 @@
+Fotos de ejemplo (solo para la demo) — Wikimedia Commons
+Convertidas a WebP y reducidas a 900 px de ancho. Reemplazar por fotos reales de los organizadores.
+
+majadito.webp     "Majadito de Santa Cruz.jpg" · Parallelepiped09 · CC BY-SA 4.0
+                  https://commons.wikimedia.org/wiki/File:Majadito_de_Santa_Cruz.jpg
+saltenas.webp     "Salteñas en Urbarí - Santa Cruz de la Sierra, Bolivia.jpg" · Ruditaly · CC BY-SA 4.0
+                  https://commons.wikimedia.org/wiki/File:Salteñas_en_Urbarí_-_Santa_Cruz_de_la_Sierra,_Bolivia.jpg
+cunape.webp       "Cuñapé al horno.jpg" · Jalexiscandia · CC BY-SA 4.0
+                  https://commons.wikimedia.org/wiki/File:Cuñapé_al_horno.jpg
+sonso.webp        "Sonso de yuca.jpg" · Ever Lecoña Hilari · CC BY-SA 4.0
+                  https://commons.wikimedia.org/wiki/File:Sonso_de_yuca.jpg
+locro.webp        "Locro Carretero.jpg" · Sheyla Cordova Nuñez · CC BY 4.0
+                  https://commons.wikimedia.org/wiki/File:Locro_Carretero.jpg
+pique-macho.webp  "Pique Macho Bolivia.jpg" · MollySVH · CC BY 2.0
+                  https://commons.wikimedia.org/wiki/File:Pique_Macho_Bolivia.jpg
+mocochinchi.webp  "Mocochinchi ya preparado.JPG" · Ferbr1 · CC BY-SA 4.0
+                  https://commons.wikimedia.org/wiki/File:Mocochinchi_ya_preparado.JPG
+keperi.webp       "Keperí.jpg" · Carlillasa · CC BY-SA 4.0
+                  https://commons.wikimedia.org/wiki/File:Keperí.jpg
+somo.webp         "Jugo de Somo.jpg" · Ever Lecoña Hilari · CC BY-SA 4.0
+                  https://commons.wikimedia.org/wiki/File:Jugo_de_Somo.jpg

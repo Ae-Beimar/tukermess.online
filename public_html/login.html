@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ingresar · tukermes</title>
+  <meta name="description" content="Ingresa o crea tu cuenta para publicar tu kermés en Santa Cruz.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#f5f5f7">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="tukermes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/tailwindConfig.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen font-sans antialiased">
+  <div class="mx-auto grid min-h-screen max-w-[1112px] gap-6 p-4 lg:grid-cols-2 lg:p-6">
+
+    <!-- Panel de marca: mosaico de fotos de comida + hoja blanca (escritorio) -->
+    <aside class="relative hidden overflow-hidden rounded-panel lg:block" aria-label="tukermes para organizadores">
+      <div class="absolute inset-0 grid grid-cols-2 grid-rows-3 gap-2" aria-hidden="true">
+        <img src="assets/img/demo/majadito.webp" alt="" class="row-span-2 h-full w-full rounded-[20px] object-cover">
+        <img src="assets/img/demo/saltenas.webp" alt="" class="h-full w-full rounded-[20px] object-cover">
+        <img src="assets/img/demo/cunape.webp" alt="" class="h-full w-full rounded-[20px] object-cover">
+        <img src="assets/img/demo/sonso.webp" alt="" class="h-full w-full rounded-[20px] object-cover">
+        <img src="assets/img/demo/pique-macho.webp" alt="" class="h-full w-full rounded-[20px] object-cover">
+      </div>
+
+      <a href="./" class="absolute left-5 top-5 flex items-center gap-2.5 rounded-full bg-white px-4 py-2.5 text-lg font-extrabold tracking-tight shadow-[var(--shadow-soft)]">
+        <img src="assets/img/logo.svg" alt="tukermes.online" class="brand-logo">
+      </a>
+
+      <div class="absolute bottom-5 left-5 right-5 rounded-[22px] bg-white p-7 shadow-[var(--shadow-lift)]">
+        <h1 class="text-[2rem] font-extrabold leading-[1.1] tracking-tight">Publica tu kermés y véndela desde el celular.</h1>
+        <ul class="mt-5 space-y-2.5 text-[15px]">
+          <li class="flex gap-3"><span class="mt-1.5 h-2.5 w-2.5 flex-none rounded-full bg-brand-600"></span>Aparece en el muro y en el mapa de Santa Cruz.</li>
+          <li class="flex gap-3"><span class="mt-1.5 h-2.5 w-2.5 flex-none rounded-full bg-navy"></span>Tu menú con fotos, precios y WhatsApp.</li>
+          <li class="flex gap-3"><span class="mt-1.5 h-2.5 w-2.5 flex-none rounded-full bg-tang"></span>El día de la kermés: caja, rifa y total recaudado, aunque falle la señal.</li>
+        </ul>
+        <p class="mt-5 text-xs text-muted">Gratis. Fotos de ejemplo: Wikimedia Commons (<a href="creditos.html" class="underline">créditos</a>).</p>
+      </div>
+    </aside>
+
+    <!-- Formularios -->
+    <main class="flex flex-col">
+      <div class="flex items-center justify-between py-2 lg:justify-end">
+        <a href="./" class="flex items-center gap-2.5 text-lg font-extrabold tracking-tight lg:hidden">
+          <img src="assets/img/logo.svg" alt="tukermes.online" class="brand-logo">
+        </a>
+        <a href="./" class="inline-flex items-center gap-1.5 text-sm font-semibold text-muted hover:text-ink"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Volver al muro</a>
+      </div>
+
+      <div class="flex flex-1 items-center justify-center py-8">
+        <div class="panel w-full max-w-md p-6 sm:p-8">
+
+          <div id="demo-note" class="mb-5 hidden rounded-2xl bg-sun-soft px-4 py-3 text-xs leading-relaxed text-ink">
+            <strong>Modo demo:</strong> la cuenta se guarda solo en este navegador. No uses tu contraseña real.
+          </div>
+
+          <!-- Pestañas -->
+          <div id="tabs" class="tabs mb-6" role="tablist">
+            <button type="button" role="tab" data-tab="login" aria-selected="true">Ingresar</button>
+            <button type="button" role="tab" data-tab="signup" aria-selected="false">Crear cuenta</button>
+          </div>
+
+          <!-- Mensajes -->
+          <div id="msg" class="mb-5 hidden rounded-2xl px-4 py-3 text-sm" role="alert"></div>
+
+          <!-- Ingresar -->
+          <form id="form-login" class="space-y-4" novalidate>
+            <div>
+              <h2 class="text-2xl font-extrabold tracking-tight">Hola de nuevo</h2>
+              <p class="mt-1 text-sm text-muted">Ingresa para administrar tus kermeses.</p>
+            </div>
+            <div>
+              <label class="field-label" for="login-email">Correo</label>
+              <input id="login-email" name="email" type="email" class="input" autocomplete="email" required>
+            </div>
+            <div>
+              <div class="flex items-baseline justify-between">
+                <label class="field-label" for="login-password">Contraseña</label>
+                <button type="button" data-go="forgot" class="text-xs font-semibold text-brand-700 hover:underline">¿La olvidaste?</button>
+              </div>
+              <input id="login-password" name="password" type="password" class="input" autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-full">Ingresar</button>
+          </form>
+
+          <!-- Crear cuenta -->
+          <form id="form-signup" class="hidden space-y-4" novalidate>
+            <div>
+              <h2 class="text-2xl font-extrabold tracking-tight">Crea tu cuenta</h2>
+              <p class="mt-1 text-sm text-muted">Para publicar y administrar tus kermeses.</p>
+            </div>
+            <div>
+              <label class="field-label" for="signup-name">Tu nombre</label>
+              <input id="signup-name" name="name" type="text" class="input" autocomplete="name" maxlength="100" required>
+            </div>
+            <div>
+              <label class="field-label" for="signup-email">Correo</label>
+              <input id="signup-email" name="email" type="email" class="input" autocomplete="email" required>
+            </div>
+            <div>
+              <label class="field-label" for="signup-password">Contraseña</label>
+              <input id="signup-password" name="password" type="password" class="input" autocomplete="new-password" minlength="8" required>
+              <p class="field-hint">Mínimo 8 caracteres.</p>
+            </div>
+            <button type="submit" class="btn btn-primary w-full">Crear cuenta</button>
+          </form>
+
+          <!-- Recuperar contraseña -->
+          <form id="form-forgot" class="hidden space-y-4" novalidate>
+            <div>
+              <h2 class="text-2xl font-extrabold tracking-tight">Recupera tu contraseña</h2>
+              <p class="mt-1 text-sm text-muted">Te enviaremos un enlace a tu correo.</p>
+            </div>
+            <div>
+              <label class="field-label" for="forgot-email">Correo</label>
+              <input id="forgot-email" name="email" type="email" class="input" autocomplete="email" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-full">Enviar enlace</button>
+            <button type="button" data-go="login" class="btn btn-soft w-full">Volver</button>
+          </form>
+
+          <!-- Nueva contraseña (al volver del correo de recuperación) -->
+          <form id="form-newpass" class="hidden space-y-4" novalidate>
+            <div>
+              <h2 class="text-2xl font-extrabold tracking-tight">Nueva contraseña</h2>
+              <p class="mt-1 text-sm text-muted">Elige una contraseña nueva para tu cuenta.</p>
+            </div>
+            <div>
+              <label class="field-label" for="newpass-password">Contraseña nueva</label>
+              <input id="newpass-password" name="password" type="password" class="input" autocomplete="new-password" minlength="8" required>
+              <p class="field-hint">Mínimo 8 caracteres.</p>
+            </div>
+            <button type="submit" class="btn btn-primary w-full">Guardar contraseña</button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="js/login.js"></script>
+  <script src="js/ui/fluid.js" defer></script>
+</body>
+</html>

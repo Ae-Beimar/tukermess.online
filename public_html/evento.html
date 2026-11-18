@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Kermés · tukermes</title>
+  <meta name="description" content="Detalle de la kermés: fecha, horario, ubicación y menú.">
+  <meta name="theme-color" content="#f5f5f7">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="tukermes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/tailwindConfig.js"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen pb-24 font-sans antialiased lg:pb-0">
+
+  <header class="glass-bar sticky top-0 z-[1100]">
+    <div class="wrap header-row flex items-center justify-between gap-4">
+      <a href="./" class="flex items-center gap-2 header-logo font-extrabold tracking-tight">
+        <img src="assets/img/logo.svg" alt="tukermes.online" class="brand-logo">
+      </a>
+      <div class="flex items-center gap-2">
+        <a href="./" class="btn btn-outline !h-11 !px-4">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          <span>Todas<span class="hidden sm:inline"> las kermeses</span></span>
+        </a>
+        <div id="site-menu" class="site-menu"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap pb-16">
+    <div id="event-root">
+      <!-- Esqueleto de carga -->
+      <div class="animate-pulse pt-14" aria-hidden="true">
+        <div class="panel p-2.5"><div class="aspect-[4/3] rounded-[18px] bg-canvas sm:aspect-[16/8]"></div><div class="m-5 h-8 w-2/3 rounded-full bg-canvas"></div></div>
+      </div>
+    </div>
+
+    <div id="not-found" class="panel mt-10 hidden px-6 py-20 text-center">
+      <h1 class="text-2xl font-bold tracking-tight">Esta kermés no está disponible</h1>
+      <p class="mt-2 text-muted">Puede que el enlace esté mal o que el organizador la haya retirado.</p>
+      <a href="./" class="btn btn-primary mt-6">Ver kermeses publicadas</a>
+    </div>
+
+    <div id="error-state" class="hidden mt-10 rounded-panel border border-red-200 bg-red-50 px-6 py-10 text-center text-red-800">
+      <p class="font-semibold">No pudimos cargar esta kermés</p>
+      <p class="mt-1 text-sm">Revisa tu conexión e intenta de nuevo.</p>
+    </div>
+  </main>
+
+  <footer class="site-footer mt-8">
+    <div class="wrap flex flex-col gap-1 py-7 text-sm text-muted sm:flex-row sm:justify-between">
+      <p>© <span id="year"></span> tukermes.online</p>
+      <p>Hecho en Santa Cruz de la Sierra, Bolivia</p>
+    </div>
+  </footer>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script type="module" src="js/evento.js"></script>
+  <script src="js/ui/fluid.js" defer></script>
+</body>
+</html>
